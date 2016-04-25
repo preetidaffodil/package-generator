@@ -44,11 +44,14 @@ class PackageGenerator extends GeneratorCommand {
      */
     public function handle() {
         $path = base_path();
-        $name = $this->ask('Name of the package? ');
-        File::makeDirectory($path .= '/packages/daffodil/' . $name, 0777, true);
+        $vendorName = $this->ask('Name of the vendor? ');
+        $packageName = $this->ask('Name of the package?');
+        File::makeDirectory($path .= '/packages/' . $vendorName .'/'. $packageName, 0777, true);
         $composer = $this->files->get(__DIR__ . '/stubs/composer.stub');
+        $name = $vendorName .'/'. $packageName;
+        
         $composer = str_replace(
-                '{{name}}', $name, $composer
+        '{{name}}', $name, $composer
         );
         File::put($path . '/composer.json', $composer);
         File::makeDirectory($path .= '/src', 0777);
