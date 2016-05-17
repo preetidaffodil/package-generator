@@ -1,0 +1,13 @@
+{
+    "name": "{{name}}",
+    "type": "{{name}}",
+    "license": "package",
+    "authors": [
+        {
+            "name": "preeti",
+            "email": "kumari.preeti@daffodilsw.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

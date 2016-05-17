@@ -1,0 +1,53 @@
+@extends('layout.master')
+@section('title', 'changeme')
+@section('addbutton')
+<a class="btn btn-sm btn-primary">Add New</a>
+@stop
+@section('content')
+<div class='col-sm-12'>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                 <div class="search well clearfix">
+                <div class="pull-left">
+                    {!! Form::open( array('route' => '','method'=>'get','class'=>'form navbar-form navbar-right searchform')) !!}
+                    {!! Form::text('search', '' ,array('class'=>'form-control','placeholder'=>'Keyword Search')) !!}
+                    {!! Form::close() !!}
+                </div>
+            </div>
+                <div class='box-body'>
+                    
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>changeme</th>
+                                <th>changeme</th>
+                                <th>changeme</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a href="">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <a href="{{}}">
+                                        <i class="fa fa-delete"></i>
+                                    </a>
+                                </td>
+                        </tbody>
+                    </table>
+
+                </div><!--end div of box-body class-->
+            </div><!--end div of box class-->
+        </div><!--end div of col-xs-12 class-->
+    </div> <!-- end div of row class-->
+</div>
+@stop

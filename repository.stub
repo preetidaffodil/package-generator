@@ -1,0 +1,56 @@
+<?php
+
+namespace {{dummynamespace}};
+
+use {{dummyintrface}};
+use \DB;
+
+
+class {{dummyclassname}} extends Interface
+{
+
+    /**
+     * Function to insert a new record into the system
+     * 
+     * @param type $data
+     * @author ' . $author . ' ' . date("m/d/Y") . '
+     */
+    public function insert($data)
+    {
+        
+    }
+
+    /**
+     * Function to update a row in the system
+     * 
+     * @param type $data
+     * @param type $id
+     * @author ' . $author . ' ' . date("m/d/Y") . '
+     */
+    public function update($data, $id)
+    {
+        
+    }
+
+    /**
+     * Function to delete a row
+     * 
+     * @param type $id
+     * @author ' . $author . ' ' . date("m/d/Y") . '
+     */
+    public function delete($id)
+    {
+        
+    }
+
+    /**
+     * Function to find a row
+     * 
+     * @param type $id
+     * @author ' . $author . ' ' . date("m/d/Y") . '
+     */
+    public function find($id)
+    {
+        
+    }
+}

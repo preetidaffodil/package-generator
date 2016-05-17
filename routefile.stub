@@ -1,0 +1,3 @@
+<?php
+
+Route::{{dummymethod}}('/{{routename}}','{{dummycontrollername}}@{{dummyfunction}}');

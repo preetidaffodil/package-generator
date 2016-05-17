@@ -1,0 +1,7 @@
+<?php {{dummynamespace}};
+
+interface {{dummyclassname}}
+{
+   //
+    
+}
