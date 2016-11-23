@@ -6,8 +6,6 @@ use Symfony\Component\Console\Input\InputOption;
 use File;
 use App;
 
-
-
 class PackageGenerator extends GeneratorCommand 
 {
 
@@ -110,43 +108,8 @@ class PackageGenerator extends GeneratorCommand
             // Check condition and prepare array according to choice
             switch ($source) {              
                 case 1:
-                    //Case for create controller
-                    $functionname;
-                    $controller = $this->ask('Name of Controller?');
-                    // Ask to create routing
-                    $routing = $this->choice(
-                            'are you want to create routing?', [
-                        '1' => 'Yes',
-                        '2' => 'No'
-                            ]
-                    );
-                    if ($routing == 'Yes') {
-                        $routename = $this->ask('Enter the name of route prefix?');
-                    } else {
-                        $routename = null;
-                    }
-                    // Option for create which type of controller
-                    $function = $this->choice('Select any one would you like to create?', [
-                        '1' => 'Blank Controller',
-                        '2' => 'All Function',
-                        '3' => 'Self Define function'
-                            ]
-                    );
-                    if ($function == 'Self Define function') {
-                       $functions =  $this->ask('write function in comma seperated form');
-                       $functionname = explode(',',$functions);
-                       
-                       
-                    }
-                    else{
-                        $functionname = null;
-                    }
-                    $this->arrController[] = array('controller' => $controller,
-                        'route' => $routing,
-                        'routeName' => $routename,
-                        'option' => $function,
-                        'function' => $functionname
-                    );
+                     // Case for create controller
+                    $this->choiceController();
                     break;
                 case 2:
                     // Case for create model
@@ -196,7 +159,7 @@ class PackageGenerator extends GeneratorCommand
                     S:                        
                     $this->output->progressStart($count);
                     for ($count = 1; $count < 9; $count++) {
-                    sleep(1);
+                    sleep(0);
                     $this->output->progressAdvance();
                      }
                     $this->output->progressFinish();      
@@ -213,8 +176,8 @@ class PackageGenerator extends GeneratorCommand
                     File::makeDirectory($path .= '/src', 0777);  
                     // Call save function
                     $this->save($vendorPath);  
-                    $this->info('After run this command you will keep entry on composer.json file into psr array' 
-                            . 'on root directory in following format' 
+                    $this->info('After run this command you will need to entry on composer.json file in psr array' 
+                            . ' on root directory in the following format' 
                             . '{{vendorname\\packagename\\: packages/vendorname/packagename/src}}' 
                             .'and register service provider in app.php file into provider array in following ' 
                             . 'format{{vendorname\packagename\serviceprovidername::class}}' 
@@ -297,7 +260,8 @@ class PackageGenerator extends GeneratorCommand
         // Set controller path
         $pathForController = base_path() . '/packages/' . $this->vendorPath['vendor'] . '/' . $this->vendorPath['package'] . '/src/http/controller';
         // Make directory for controller
-        File::makeDirectory($filePath .= 'controller', 0777, true);        
+        if(!empty($this->arrController)){
+        File::makeDirectory($filePath .= 'controller', 0777, true);     
         foreach ($this->arrController as $value) {
             $val = $value['option'];
             $controller = ucfirst($value['controller']);
@@ -391,7 +355,7 @@ class PackageGenerator extends GeneratorCommand
                     File::put($pathForRoute . '/routes.php', $stub);
                 }
             }
-        }
+        }}
     }
 
     /**
@@ -407,7 +371,8 @@ class PackageGenerator extends GeneratorCommand
         $modelnameSpace = ucfirst($this->vendorPath['vendor']) . ' \ ' . ucfirst($this->vendorPath['package']) .'\Src'. '\Http' . '\Model';
         $modelnameSpace = str_replace(' ', '', $modelnameSpace);
         // Create directory for model
-        File::makeDirectory($filePath .= 'model', 0777, true);
+        if(!empty($this->arrModel)){
+        File::makeDirectory($filePath .= 'model', 0777, true);}
         foreach ($this->arrModel as $value) {
             $stub = $this->files->get(__DIR__ . '/stubs/model.stub');
             $stub = str_replace(
@@ -432,7 +397,8 @@ class PackageGenerator extends GeneratorCommand
     public function createView($filePath) 
     {
         // Create directory for view
-        File::makeDirectory($filePath .= 'Views', 0777, true);
+        if(!empty($this->arrView)){
+        File::makeDirectory($filePath .= 'Views', 0777, true);}
         foreach ($this->arrView as $value) {
             $value = $value['view'];
             switch ($value) {
@@ -462,7 +428,9 @@ class PackageGenerator extends GeneratorCommand
         $nameSpace = ucfirst($this->vendorPath['vendor']) . ' \ ' . ucfirst($this->vendorPath['package']) . '\Src' . '\Requests';
         $nameSpace = str_replace(' ', '', $nameSpace);
         // Create directory for request
+        if(!empty($this->arrRequest)){
         File::makeDirectory($pathForRequest .= '/requests', 0777, true);
+        }
         // Get stub file
         $requestStub = $this->files->get(__DIR__ . '/stubs/request.stub');
         foreach ($this->arrRequest as $requestName) {
@@ -519,7 +487,9 @@ class PackageGenerator extends GeneratorCommand
         $middlewarenameSpace = ucfirst($this->vendorPath['vendor']) . ' \ ' . ucfirst($this->vendorPath['package']) . '\Src' . '\Middleware';
         $middlewarenameSpace = str_replace(' ', '', $middlewarenameSpace);
         // Craete directory for middleware
+        if(!empty($this->arrMiddleware)){
         File::makeDirectory($pathForMiddleware .= '/middlewares', 0777, true);
+        }
         foreach ($this->arrMiddleware as $middleware) {
             // Get stub file
             $stubMiddleware = $this->files->get(__DIR__ . '/stubs/middleware.stub');
@@ -547,7 +517,9 @@ class PackageGenerator extends GeneratorCommand
         $eventnameSpace = ucfirst($this->vendorPath['vendor']) . ' \ ' . ucfirst($this->vendorPath['package']) . '\Src' . '\Event';
         $eventnameSpace = str_replace(' ', '', $eventnameSpace);
         // Create directory for event
+        if(!empty($this->arrEvent)){
         File::makeDirectory($pathForEvent .= '/events', 0777, true);
+        }
         foreach ($this->arrEvent as $event) {
             $stubEvent = $this->files->get(__DIR__ . '/stubs/event.stub');
 
@@ -578,7 +550,9 @@ class PackageGenerator extends GeneratorCommand
         ;
         $repoInterface = str_replace(' ', '', $repoInterface);
         // Create directory for repository
+        if(!empty($this->arrRepo)){
         File::makeDirectory($pathForRepo .= '/repositories', 0777, true);
+        }
         foreach ($this->arrRepo as $repo) {
             $stubRepo = $this->files->get(__DIR__ . '/stubs/repository.stub');
 
@@ -608,7 +582,9 @@ class PackageGenerator extends GeneratorCommand
         $interfacenameSpace = ucfirst($this->vendorPath['vendor']) . ' \ ' . ucfirst($this->vendorPath['package']) . '\Src' . '\Interface';
         $interfacenameSpace = str_replace(' ', '', $interfacenameSpace);
         // Create directory for interface
+        if(!empty($this->arrInterface)){
         File::makeDirectory($pathForInterface .= '/interface', 0777, true);
+        }
         foreach ($this->arrInterface as $interface) {
             // Get stub file
             $stubInterface = $this->files->get(__DIR__ . '/stubs/interface.stub');
@@ -623,5 +599,46 @@ class PackageGenerator extends GeneratorCommand
             File::put($pathForInterface . '/' . ucwords($interface['interface']) . '.php', $stubInterface);
         }
     }
-   
+    /**
+     * Take input for controller and save into array
+     * 
+     * @author Preeti 27/05/16
+     */
+    public function choiceController()
+    {
+        $functionname;
+        $controller = $this->ask('Name of Controller?');
+        // Ask to create routing
+        $routing = $this->choice(
+                'are you want to create routing?', [
+            '1' => 'Yes',
+            '2' => 'No'
+                ]
+        );
+        if ($routing == 'Yes') {
+            $routename = $this->ask('Enter the name of route prefix?');
+        } else {
+            $routename = null;
+        }
+        // Option for create which type of controller
+        $function = $this->choice('Select any one would you like to create?', [
+            '1' => 'Blank Controller',
+            '2' => 'All Function',
+            '3' => 'Self Define function'
+                ]
+        );
+        if ($function == 'Self Define function') {
+            $functions = $this->ask('write function in comma seperated form');
+            $functionname = explode(',', $functions);
+        } else {
+            $functionname = null;
+        }
+        $this->arrController[] = array('controller' => $controller,
+            'route' => $routing,
+            'routeName' => $routename,
+            'option' => $function,
+            'function' => $functionname
+        );
+    }
+  
 }
